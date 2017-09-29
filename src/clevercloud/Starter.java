@@ -3,22 +3,24 @@ package clevercloud;
 import java.lang.String;
 import java.lang.System;
 import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.io.*;
 
 public class Starter {
 
   public static void main(String [] args) throws IOException, InterruptedException {
     System.out.println("👋 🌍 welcome on Clever Cloud");
-    Timer timer = new Timer();
-    TimerTask myTask = new TimerTask() {
-      @Override
-      public void run() {
-        System.out.println("❤️ ... ❤️ ... I'm alive 😀");
-      }
-    };
 
-    timer.schedule(myTask, 2000, 10000);
+    String cmd = System.getenv("SHELL_SCRIPT").toString();
+
+    Runtime run = Runtime.getRuntime();
+    Process pr = run.exec(cmd);
+    pr.waitFor();
+    BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+    String line = "";
+    while ((line=buf.readLine())!=null) {
+      System.out.println(line);
+    }
+
   }
 
 }
